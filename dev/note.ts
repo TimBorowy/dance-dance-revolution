@@ -2,9 +2,11 @@ class Note {
     public direction:string
     public xPos:number
     public yPos:number
+    private game:Game
 
     private note:HTMLElement
-    constructor(direction:string){
+    constructor(direction:string, game:Game){
+        this.game = game
 
         this.direction = direction
         this.xPos = 0
@@ -42,6 +44,7 @@ class Note {
 
     public remove(){
         this.note.remove()
+        this.game.removeNote(this)
     }
 
     
