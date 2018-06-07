@@ -2,6 +2,6 @@
 
 Game project voor programmeren OP4 in Typescript
 
-##Feedback op mijn game
+## Feedback op mijn game
 
-##Mijn Feedback peer review op:
+## Mijn Feedback peer review op:

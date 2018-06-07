@@ -10,20 +10,20 @@ class Key{
         this.xPos = 0
         this.game = game
 
-        switch(this.direction) {
+        let windowWidth:number = window.innerWidth / 2 - 200
 
-            case "left" : this.xPos = 350;
+        switch(this.direction) {
+            case "left" : this.xPos = windowWidth;
             break;
     
-            case "up" : this.xPos = 450;
+            case "up" : this.xPos = windowWidth + 100;
             break;
     
-            case "down" : this.xPos = 550;
+            case "down" : this.xPos = windowWidth + 200;
             break;
     
-            case "right" : this.xPos = 650;
+            case "right" : this.xPos = windowWidth + 300;
             break;
-    
         }
 
         

@@ -11,18 +11,33 @@ var Game = (function () {
         this.key = new Key('up', this);
         this.key = new Key('down', this);
         this.key = new Key('right', this);
+        this.song = new stasilo.BeatDetector({
+            sens: 5,
+            visualizerFFTSize: 256,
+            analyserFFTSize: 256,
+            passFreq: 600,
+            url: "songs/get_ready_for_this.mp3"
+        });
+        this.song.setVolume(0);
+        var audio = new Audio('songs/get_ready_for_this.mp3');
+        setTimeout(function () {
+            audio.play();
+        }, 5000);
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
-        if (this.frame++ % this.spawnRate === 0) {
-            this.generateNote();
+        if (this.song.isOnBeat()) {
+            this.frame++;
+            if (this.frame % 2 == 0) {
+                this.generateNote();
+            }
         }
         if (this.score.score > 100) {
             if (this.rotate < this.rotateLimit) {
-                this.rotate += 2;
+                this.rotate += 1;
             }
-            document.body.style.webkitTransformOrigin = 'center';
+            document.body.style.webkitTransformOrigin = 'center center';
             document.body.style.transform = "rotate(" + this.rotate + "deg)";
         }
         for (var _i = 0, _a = this.notes; _i < _a.length; _i++) {
@@ -59,18 +74,19 @@ var Key = (function () {
         this.direction = direction;
         this.xPos = 0;
         this.game = game;
+        var windowWidth = window.innerWidth / 2 - 200;
         switch (this.direction) {
             case "left":
-                this.xPos = 350;
+                this.xPos = windowWidth;
                 break;
             case "up":
-                this.xPos = 450;
+                this.xPos = windowWidth + 100;
                 break;
             case "down":
-                this.xPos = 550;
+                this.xPos = windowWidth + 200;
                 break;
             case "right":
-                this.xPos = 650;
+                this.xPos = windowWidth + 300;
                 break;
         }
         this.key = document.createElement('key');
@@ -126,18 +142,19 @@ var Note = (function () {
     function Note(direction) {
         this.direction = direction;
         this.xPos = 0;
+        var windowWidth = window.innerWidth / 2 - 200;
         switch (this.direction) {
             case "left":
-                this.xPos = 350;
+                this.xPos = windowWidth;
                 break;
             case "up":
-                this.xPos = 450;
+                this.xPos = windowWidth + 100;
                 break;
             case "down":
-                this.xPos = 550;
+                this.xPos = windowWidth + 200;
                 break;
             case "right":
-                this.xPos = 650;
+                this.xPos = windowWidth + 300;
                 break;
         }
         this.yPos = window.innerHeight - 100;

@@ -1,0 +1,23 @@
+{
+  "name": "typescript_game",
+  "version": "1.0.0",
+  "description": "Game project voor programmeren OP4 in Typescript",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimBorowy/typescript_game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimBorowy/typescript_game/issues"
+  },
+  "homepage": "https://github.com/TimBorowy/typescript_game#readme",
+  "dependencies": {}
+}

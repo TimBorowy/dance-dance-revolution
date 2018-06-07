@@ -7,6 +7,7 @@ class Game {
     public score:Score
     private rotate:number = 0
     private rotateLimit:number = 360
+    private song:any
 
     constructor(){
         this.frame = 0
@@ -22,24 +23,45 @@ class Game {
         this.key = new Key('down', this)
         this.key = new Key('right', this)
 
+        this.song = new stasilo.BeatDetector({
+            sens: 5,
+            visualizerFFTSize: 256, 
+            analyserFFTSize: 256, 
+            passFreq: 600,
+            url: "songs/get_ready_for_this.mp3"
+        });
+        this.song.setVolume(0)
+
+        let audio = new Audio('songs/get_ready_for_this.mp3');
+        setTimeout(() => {
+            audio.play();
+        },5000)
+        
+
         this.gameLoop()
     }
 
     private gameLoop():void{
 
-        if(this.frame++ % this.spawnRate === 0){
+        /* if(this.frame++ % this.spawnRate === 0){
             this.generateNote()
+        } */
+
+
+        if(this.song.isOnBeat()){
+            this.frame++
+            
+            if(this.frame % 2 == 0){
+                this.generateNote()
+            }
         }
-
-
-        
 
         if(this.score.score > 100){
 
             if(this.rotate < this.rotateLimit){
-                this.rotate+=2
+                this.rotate+=1
             }
-            document.body.style.webkitTransformOrigin = 'center'
+            document.body.style.webkitTransformOrigin = 'center center'
             document.body.style.transform = `rotate(${this.rotate}deg)`
         }
 
@@ -85,5 +107,7 @@ class Game {
 
      
 } 
+
+
 
 window.addEventListener("load", () => new Game())
