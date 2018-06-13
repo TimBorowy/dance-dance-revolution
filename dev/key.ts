@@ -1,44 +1,28 @@
+/// <reference path="gameElement.ts" />
 
-class Key{
-    private key:HTMLElement
-    private direction:string
-    private xPos:number
+class Key extends GameElement{
+
     private successThresholdLow:number = 65
     private successThresholdHigh:number = 95
-    private game:Game
 
-    constructor(direction:string, game:Game){
-        this.direction = direction
-        this.xPos = 0
-        this.game = game
+    constructor(direction:string, game:GameScreen){
 
-        let windowWidth:number = window.innerWidth / 2 - 200
-
-        switch(this.direction) {
-            case "left" : this.xPos = windowWidth;
-            break;
-    
-            case "up" : this.xPos = windowWidth + 100;
-            break;
-    
-            case "down" : this.xPos = windowWidth + 200;
-            break;
-    
-            case "right" : this.xPos = windowWidth + 300;
-            break;
-        }
-
+        super(game, 'key', direction)
         
-        this.key = document.createElement('key')
-        document.body.appendChild(this.key)
+        this.element = document.createElement('key')
+        let background = document.querySelector('gameBackground')
+        if(background != null){
+            background.appendChild(this.element)
+        }
+        
 
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
 
         // to be used when building longer press streaks
         //window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
 
-        this.key.style.transform = `translate(${this.xPos}px, 80px)`
-        this.key.style.backgroundImage = `url(images/static_${this.direction}.png)`
+        this.element.style.transform = `translate(${this.xPos}px, 80px)`
+        this.element.style.backgroundImage = `url(images/static_${this.direction}.png)`
     }
 
     private onKeyUp(e: KeyboardEvent){
@@ -53,42 +37,42 @@ class Key{
             
             // when player presses left and a note direction is also left
             if (e.keyCode == 37 && note.direction == "left") {
-
-                // when note y position is between the success thresholds
-                if (note.yPos < this.successThresholdHigh && note.yPos > this.successThresholdLow) {
-
-                    // add to score
-                    this.game.score.scoreUp()
-
-                    // remove note from screen
-                    note.remove()
-                }
+                this.checkNotePosition(note) 
             }
             if (e.keyCode == 38 && note.direction == "up") {
-
-                if (note.yPos < this.successThresholdHigh && note.yPos > this.successThresholdLow) {
-
-                    this.game.score.scoreUp()
-                    note.remove()
-                }
+                this.checkNotePosition(note)
             }
             if (e.keyCode == 40 && note.direction == "down") {
-
-                if (note.yPos < this.successThresholdHigh && note.yPos > this.successThresholdLow) {
-
-                    this.game.score.scoreUp()
-                    note.remove()
-                }
+                this.checkNotePosition(note)
             }
             if (e.keyCode == 39 && note.direction == "right") {
+                this.checkNotePosition(note)
+            }
+        }     
+    }
 
-                if (note.yPos < this.successThresholdHigh && note.yPos > this.successThresholdLow) {
+    private checkNotePosition(note: Note){
+        // when note y position is between the success thresholds
+        let score:number
+        if (note.yPos < this.successThresholdHigh && note.yPos > this.successThresholdLow) {
+            score = 10
 
-                    this.game.score.scoreUp()
-                    note.remove()
-                }
+            if(note.yPos < this.successThresholdHigh -8 && note.yPos > this.successThresholdLow +8){
+                score += 5
             }
 
+            if(note.yPos < this.successThresholdHigh -12 && note.yPos > this.successThresholdLow +12){
+                score += 10
+            }
+
+            // give user feedback
+            new Feedback(score)
+
+            // add to score
+            this.game.score.scoreUp(score)
+            
+            // remove note from screen
+            note.remove()
         }
         
     }

@@ -1,12 +1,9 @@
 body {
-    background-color: #70CF51;
     font-family: 'Press Start 2P', cursive;
     color:white;
     font-size:22px;
     overflow:hidden;
     margin:0px; padding:0px;
-    height: 100vh;
-    width: 100%;
 }
 
 body * {
@@ -15,6 +12,17 @@ body * {
     box-sizing: border-box;
     background-repeat: no-repeat;
     
+}
+menuBox{
+    width: 100%;
+    height: 100px;
+    margin-top:calc(50vh - 50px);
+    text-align:center;
+}
+songChoice, start{
+    position: initial;
+    display: block;
+    margin-bottom: 30px;
 }
 
 score {
@@ -31,8 +39,64 @@ note {
     background-size: cover
 }
 
-background {
-    background-color: #70CF51
+feedback{
+    height: 25px;
+    width: 200px;
+    text-align: center;
+    
+    -webkit-animation: feedbackFade 0.4s ease;
+    -moz-animation: feedbackFade 0.4s ease;
+    animation: feedbackFade 0.4s ease;
+}
+@-webkit-keyframes backgroundfade {
+    0%{opacity: 0; }
+    50%{opacity: 100}
+    100%{opacity: 0}
+}
+@-moz-keyframes backgroundfade {
+    0%{opacity: 0; }
+    50%{opacity: 100}
+    100%{opacity: 0}
+}
+@keyframes feedbackFade { 
+    0%{opacity: 0; }
+    50%{opacity: 100}
+    100%{opacity: 0}
+}
+
+titleBackground{
+    z-index: -1;
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(235deg, #421cdd, #d51e1e);
+    background-size: 400% 400%;
+    
+    -webkit-animation: backgroundfade 19s ease infinite;
+    -moz-animation: backgroundfade 19s ease infinite;
+    animation: backgroundfade 19s ease infinite;
+}
+
+gameBackground{
+    height: 100vh;
+    width: 100%;
+    background-color: rgb(78, 19, 216);
+    background-image: url(/images/dancing.gif);
     width:100%; height: 100%;
     background-size: cover;
+}
+
+@-webkit-keyframes backgroundfade {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes backgroundfade {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes backgroundfade { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
