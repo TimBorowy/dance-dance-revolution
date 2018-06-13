@@ -9,9 +9,8 @@ class Key extends GameElement{
 
         super(game, 'key', direction)
         
-        let background = document.querySelector('gameBackground')
-        if(background != null){
-            background.appendChild(this.element)
+        if(this.game.background != null){
+            this.game.background.appendChild(this.element)
         }
         
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))

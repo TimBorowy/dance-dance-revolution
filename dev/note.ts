@@ -10,9 +10,8 @@ class Note extends GameElement{
 
         this.yPos = window.innerHeight - 100
 
-        let background = document.querySelector('gameBackground')
-        if(background != null){
-            background.appendChild(this.element)
+        if(this.game.background != null){
+            this.game.background.appendChild(this.element)
         }
 
         this.element.style.backgroundImage = `url(images/${this.direction}.gif)`

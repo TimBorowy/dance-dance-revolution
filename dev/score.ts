@@ -1,13 +1,16 @@
 class Score{
     public score:number
+    protected game:GameScreen
     private element:HTMLElement
 
-    constructor(){
+    constructor(game:GameScreen){
+
+        this.game = game
         this.score = 0
         this.element = document.createElement('score')
-        let background = document.querySelector('gameBackground')
-        if(background != null){
-            background.appendChild(this.element)
+        
+        if(this.game.background != null){
+            this.game.background.appendChild(this.element)
         }
 
         this.element.innerText = `Score: ${this.score}`

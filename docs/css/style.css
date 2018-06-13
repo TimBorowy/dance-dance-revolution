@@ -1,7 +1,7 @@
 body {
     font-family: 'Press Start 2P', cursive;
     color:white;
-    font-size:22px;
+    font-size:25px;
     overflow:hidden;
     margin:0px; padding:0px;
 }
@@ -25,8 +25,12 @@ songChoice, start{
     margin-bottom: 30px;
 }
 
+start{
+    cursor: pointer
+}
+
 score {
-    margin:15px;
+    margin: 25px;
 }
 
 key {
@@ -43,7 +47,8 @@ feedback{
     height: 25px;
     width: 200px;
     text-align: center;
-    
+    font-size: 30px;
+
     -webkit-animation: feedbackFade 0.4s ease;
     -moz-animation: feedbackFade 0.4s ease;
     animation: feedbackFade 0.4s ease;

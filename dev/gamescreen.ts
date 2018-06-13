@@ -5,6 +5,7 @@ class GameScreen{
     public score:Score
 
     private song:any
+    public background:HTMLElement
 
     private songTimeCodes:Array<number>
 
@@ -14,8 +15,8 @@ class GameScreen{
 
         this.songTimeCodes = []
 
-        let background = document.createElement('gameBackground')
-        document.body.appendChild(background)
+        this.background = document.createElement('gameBackground')
+        document.body.appendChild(this.background)
 
 
         // get beatmap of song and start song when received
@@ -26,7 +27,7 @@ class GameScreen{
 
 
         // generate score object
-        this.score = new Score()
+        this.score = new Score(this)
         // init note array
         this.notes = new Array()
         // generate key objects

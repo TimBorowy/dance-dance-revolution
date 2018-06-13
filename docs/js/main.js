@@ -172,13 +172,13 @@ var GameScreen = (function () {
         var _this = this;
         this.game = game;
         this.songTimeCodes = [];
-        var background = document.createElement('gameBackground');
-        document.body.appendChild(background);
+        this.background = document.createElement('gameBackground');
+        document.body.appendChild(this.background);
         fetch("songs/" + this.game.songTitle + ".beatmap.js")
             .then(function (response) { return response.json(); })
             .then(function (data) { return _this.successHandler(data); })
             .catch(function (error) { return _this.errorHandler(error); });
-        this.score = new Score();
+        this.score = new Score(this);
         this.notes = new Array();
         new Key('left', this);
         new Key('up', this);
@@ -245,9 +245,8 @@ var Key = (function (_super) {
         var _this = _super.call(this, game, 'key', direction) || this;
         _this.successThresholdLow = 65;
         _this.successThresholdHigh = 95;
-        var background = document.querySelector('gameBackground');
-        if (background != null) {
-            background.appendChild(_this.element);
+        if (_this.game.background != null) {
+            _this.game.background.appendChild(_this.element);
         }
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         _this.element.style.transform = "translate(" + _this.xPos + "px, 80px)";
@@ -293,9 +292,8 @@ var Note = (function (_super) {
     function Note(direction, game) {
         var _this = _super.call(this, game, 'note', direction) || this;
         _this.yPos = window.innerHeight - 100;
-        var background = document.querySelector('gameBackground');
-        if (background != null) {
-            background.appendChild(_this.element);
+        if (_this.game.background != null) {
+            _this.game.background.appendChild(_this.element);
         }
         _this.element.style.backgroundImage = "url(images/" + _this.direction + ".gif)";
         _this.element.style.transform = "translate(" + _this.xPos + "px, " + _this.yPos + "px)";
@@ -312,12 +310,12 @@ var Note = (function (_super) {
     return Note;
 }(GameElement));
 var Score = (function () {
-    function Score() {
+    function Score(game) {
+        this.game = game;
         this.score = 0;
         this.element = document.createElement('score');
-        var background = document.querySelector('gameBackground');
-        if (background != null) {
-            background.appendChild(this.element);
+        if (this.game.background != null) {
+            this.game.background.appendChild(this.element);
         }
         this.element.innerText = "Score: " + this.score;
     }
