@@ -9,26 +9,15 @@ class Key extends GameElement{
 
         super(game, 'key', direction)
         
-        this.element = document.createElement('key')
         let background = document.querySelector('gameBackground')
         if(background != null){
             background.appendChild(this.element)
         }
         
-
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
-
-        // to be used when building longer press streaks
-        //window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
 
         this.element.style.transform = `translate(${this.xPos}px, 80px)`
         this.element.style.backgroundImage = `url(images/static_${this.direction}.png)`
-    }
-
-    private onKeyUp(e: KeyboardEvent){
-        if(e.keyCode == 38){
-            console.log("clickup")
-        }
     }
 
     private onKeyDown(e: KeyboardEvent){

@@ -170,10 +170,7 @@ var GameElement = (function () {
 var GameScreen = (function () {
     function GameScreen(game) {
         var _this = this;
-        this.rotate = 0;
-        this.rotateLimit = 360;
         this.game = game;
-        this.beatCount = 0;
         this.songTimeCodes = [];
         var background = document.createElement('gameBackground');
         document.body.appendChild(background);
@@ -230,13 +227,6 @@ var GameScreen = (function () {
             if (this.songTimeCodes.length <= 0) {
                 this.game.showEndScreen();
             }
-            console.log("elapsed time: ", this.song.getElapsedTime());
-            console.log("beat timcode: ", this.songTimeCodes[0] - 4);
-        }
-        if (this.song.isOnBeat()) {
-            this.beatCount++;
-            if (this.beatCount % 2 == 0) {
-            }
         }
         for (var _i = 0, _a = this.notes; _i < _a.length; _i++) {
             var note = _a[_i];
@@ -255,7 +245,6 @@ var Key = (function (_super) {
         var _this = _super.call(this, game, 'key', direction) || this;
         _this.successThresholdLow = 65;
         _this.successThresholdHigh = 95;
-        _this.element = document.createElement('key');
         var background = document.querySelector('gameBackground');
         if (background != null) {
             background.appendChild(_this.element);
@@ -265,11 +254,6 @@ var Key = (function (_super) {
         _this.element.style.backgroundImage = "url(images/static_" + _this.direction + ".png)";
         return _this;
     }
-    Key.prototype.onKeyUp = function (e) {
-        if (e.keyCode == 38) {
-            console.log("clickup");
-        }
-    };
     Key.prototype.onKeyDown = function (e) {
         for (var _i = 0, _a = this.game.notes; _i < _a.length; _i++) {
             var note = _a[_i];

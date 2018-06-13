@@ -4,9 +4,6 @@ class GameScreen{
     public notes: Array<Note>
     public score:Score
 
-    private beatCount:number
-    private rotate:number = 0
-    private rotateLimit:number = 360
     private song:any
 
     private songTimeCodes:Array<number>
@@ -15,7 +12,6 @@ class GameScreen{
     constructor(game:Game){
         this.game = game
 
-        this.beatCount = 0
         this.songTimeCodes = []
 
         let background = document.createElement('gameBackground')
@@ -97,26 +93,8 @@ class GameScreen{
                 this.game.showEndScreen()
             }
 
-            console.log("elapsed time: ", this.song.getElapsedTime())
-            console.log("beat timcode: ", this.songTimeCodes[0] - 4)
-        }
-        
-
-        // when beat is detected
-        if(this.song.isOnBeat()){  
-            this.beatCount++
-            
-            
-            // create note every second beat
-            if(this.beatCount % 2 == 0){
-
-                //use this for generating beatmaps
-                /* this.songTimeCodes.push(this.song.getElapsedTime())
-                console.clear()
-                console.log(this.songTimeCodes.toString()) */
-                //this.generateNote()
-                
-            }
+            /* console.log("elapsed time: ", this.song.getElapsedTime())
+            console.log("beat timcode: ", this.songTimeCodes[0] - 4) */
         }
 
         // when score is over a certain limit, rotate game
