@@ -41,10 +41,6 @@ class Key{
         this.key.style.backgroundImage = `url(images/static_${this.direction}.png)`
     }
 
-    public update(){
-
-    }
-
     private onKeyUp(e: KeyboardEvent){
         if(e.keyCode == 38){
             console.log("clickup")

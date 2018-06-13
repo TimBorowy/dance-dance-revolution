@@ -1,38 +1,51 @@
 "use strict";
 var Game = (function () {
     function Game() {
+        var _this = this;
         this.rotate = 0;
         this.rotateLimit = 360;
-        this.songHasStarted = false;
-        this.frame = 0;
+        this.songTitle = 'around_the_world_short';
+        this.beatCount = 0;
+        this.songTimeCodes = [];
+        fetch("songs/" + this.songTitle + ".beatmap.js")
+            .then(function (response) { return response.json(); })
+            .then(function (data) { return _this.successHandler(data); })
+            .catch(function (error) { return _this.errorHandler(error); });
         this.score = new Score();
         this.notes = new Array();
         this.key = new Key('left', this);
         this.key = new Key('up', this);
         this.key = new Key('down', this);
         this.key = new Key('right', this);
+    }
+    Game.prototype.successHandler = function (data) {
+        this.songTimeCodes = data;
         this.song = new stasilo.BeatDetector({
-            sens: 5,
+            sens: 16,
             visualizerFFTSize: 256,
             analyserFFTSize: 256,
-            passFreq: 600,
-            url: "songs/get_ready_for_this.mp3"
+            passFreq: 200,
+            url: "songs/" + this.songTitle + ".mp3",
         });
-        this.song.setVolume(0);
         this.gameLoop();
-    }
-    Game.prototype.startSong = function () {
-        var audio = new Audio('songs/get_ready_for_this.mp3');
+    };
+    Game.prototype.errorHandler = function (data) {
+        console.log(data);
     };
     Game.prototype.gameLoop = function () {
         var _this = this;
+        if (this.song.getElapsedTime() > this.songTimeCodes[0] - 4) {
+            this.generateNote();
+            this.songTimeCodes.shift();
+            console.log("elapsed time: ", this.song.getElapsedTime());
+            console.log("beat timcode: ", this.songTimeCodes[0] - 4);
+        }
         if (this.song.isOnBeat()) {
-            this.frame++;
-            if (this.frame % 2 == 0) {
-                this.generateNote();
+            this.beatCount++;
+            if (this.beatCount % 2 == 0) {
             }
         }
-        if (this.score.score > 100) {
+        if (this.score.score > 500) {
             if (this.rotate < this.rotateLimit) {
                 this.rotate += 1;
             }
@@ -46,12 +59,14 @@ var Game = (function () {
                 note.remove();
             }
         }
-        this.key.update();
-        requestAnimationFrame(function () { return _this.gameLoop(); });
+        setTimeout(function () { return _this.gameLoop(); }, 10);
+    };
+    Game.prototype.showPlayScreen = function () {
+        document.body.innerHTML = '';
+        this.screen = new GameScreen();
     };
     Game.prototype.generateNote = function () {
         var randNum = Math.floor(Math.random() * 4) + 1;
-        console.log(this.notes.length);
         if (randNum === 1) {
             this.notes.push(new Note("left", this));
         }
@@ -72,6 +87,14 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () { return new Game(); });
+var GameScreen = (function () {
+    function GameScreen(game) {
+        this.game = game;
+    }
+    GameScreen.prototype.update = function () {
+    };
+    return GameScreen;
+}());
 var Key = (function () {
     function Key(direction, game) {
         var _this = this;
@@ -101,8 +124,6 @@ var Key = (function () {
         this.key.style.transform = "translate(" + this.xPos + "px, 80px)";
         this.key.style.backgroundImage = "url(images/static_" + this.direction + ".png)";
     }
-    Key.prototype.update = function () {
-    };
     Key.prototype.onKeyUp = function (e) {
         if (e.keyCode == 38) {
             console.log("clickup");
@@ -166,7 +187,7 @@ var Note = (function () {
         this.note.style.transform = "translate(" + this.xPos + "px, " + this.yPos + "px)";
     }
     Note.prototype.move = function () {
-        this.yPos -= 4;
+        this.yPos -= (window.innerHeight - 80) / 400;
         this.note.style.transform = "translate(" + this.xPos + "px, " + this.yPos + "px)";
     };
     Note.prototype.remove = function () {

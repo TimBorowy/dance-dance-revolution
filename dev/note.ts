@@ -38,7 +38,7 @@ class Note {
     }
 
     public move(){
-        this.yPos -= 4
+        this.yPos -= (window.innerHeight - 80) / 400 // magic!
         this.note.style.transform = `translate(${this.xPos}px, ${this.yPos}px)`
     }
 

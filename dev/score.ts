@@ -14,6 +14,5 @@ class Score{
         this.score += 10
         this.element.innerText = `Score: ${this.score}`
     }
-
     
 }

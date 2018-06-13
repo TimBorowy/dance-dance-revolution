@@ -4,68 +4,85 @@ class Game {
     public score:Score
     private key: Key
 
-    private frame:number
-    //private spawnRate:number
-
+    private beatCount:number
     private rotate:number = 0
     private rotateLimit:number = 360
     private song:any
-    private songHasStarted:boolean = false
+
+    private songTimeCodes:Array<number>
+    private songTitle:string = 'around_the_world_short'
 
     constructor(){
-        this.frame = 0
-        //this.spawnRate = 50
+        this.beatCount = 0
+        this.songTimeCodes = []
 
+        // get beatmap of song and start song when received
+        fetch(`songs/${this.songTitle}.beatmap.js`)
+            .then(response => response.json())
+            .then(data => this.successHandler(data))
+            .catch(error => this.errorHandler(error))
+
+
+        // generate score object
         this.score = new Score()
+        // init note array
         this.notes = new Array()
-        
+        // generate key objects
         this.key = new Key('left', this)
         this.key = new Key('up', this)
         this.key = new Key('down', this)
         this.key = new Key('right', this)
-
-        this.song = new stasilo.BeatDetector({
-            sens: 5,
-            visualizerFFTSize: 256, 
-            analyserFFTSize: 256, 
-            passFreq: 600,
-            url: "songs/get_ready_for_this.mp3"
-        });
-        this.song.setVolume(0)
-        
-
-        this.gameLoop()
+  
     }
 
-    private startSong(){
-        let audio = new Audio('songs/get_ready_for_this.mp3');
-        //setTimeout(() => {
-            //audio.play();
-        //},5000)
+    private successHandler(data:Array<number>){
+        this.songTimeCodes = data
+        this.song = new stasilo.BeatDetector({
+            sens: 16,
+            visualizerFFTSize: 256, 
+            analyserFFTSize: 256, 
+            passFreq: 200,
+            url: `songs/${this.songTitle}.mp3`,
+        });
+        //this.song.setVolume(0)
+        
+        this.gameLoop()
+    }
+    private errorHandler(data:string){
+        console.log(data)
     }
 
     private gameLoop():void{
-
-        /* if(this.frame++ % this.spawnRate === 0){
+        
+        //  THIS SHIT IS IMPORTANT!!!
+        if(this.song.getElapsedTime() > this.songTimeCodes[0] - 4 ){
             this.generateNote()
-        } */
-        // if(!this.song.isOnBeat() && !this.songHasStarted){
-        //     this.songHasStarted = true
-        //     this.startSong()
-        // }
+            this.songTimeCodes.shift()
+
+            console.log("elapsed time: ", this.song.getElapsedTime())
+            console.log("beat timcode: ", this.songTimeCodes[0] - 4)
+        }
+        
 
         // when beat is detected
-        if(this.song.isOnBeat()){
-            this.frame++
+        if(this.song.isOnBeat()){  
+            this.beatCount++
+            
             
             // create note every second beat
-            if(this.frame % 2 == 0){
-                this.generateNote()
+            if(this.beatCount % 2 == 0){
+
+                //use this for generating beatmaps
+                /* this.songTimeCodes.push(this.song.getElapsedTime())
+                console.clear()
+                console.log(this.songTimeCodes.toString()) */
+                //this.generateNote()
+                
             }
         }
 
         // when score is over a certain limit, rotate game
-        if(this.score.score > 100){
+        if(this.score.score > 500){
 
             if(this.rotate < this.rotateLimit){
                 this.rotate+=1
@@ -75,44 +92,48 @@ class Game {
         }
 
 
+        // loop all active notes
         for(let note of this.notes){
 
+            // move note up
             note.move()
 
+            // if note is out of range, remove note
             if(note.yPos < 10){
                 note.remove()
             }
         }
 
-        this.key.update()
+        // next loop after 10 miliseconds
+        setTimeout(() => this.gameLoop(), 10)
+    }
 
-        requestAnimationFrame(()=> this.gameLoop())
+    public showPlayScreen(){
+        document.body.innerHTML = ''
+
+        this.screen = new GameScreen()
+
     }
 
     private generateNote(){
         // Randomizes between 1 and 4
         let randNum:number = Math.floor(Math.random() * 4) + 1;
-        console.log(this.notes.length)
 
         if (randNum === 1) {
 
             this.notes.push(new Note("left", this))
-
         }
         if (randNum === 2) {
 
             this.notes.push(new Note("right", this))
-
         }
         if (randNum === 3) {
 
             this.notes.push(new Note("up", this))
-            
         }
         if (randNum === 4) {
 
             this.notes.push(new Note("down", this))
-
         }
     }
 
@@ -121,10 +142,7 @@ class Game {
         let index = this.notes.indexOf(note)
         this.notes.splice(index, 1);
     }
-
      
-} 
-
-
+}
 
 window.addEventListener("load", () => new Game())
