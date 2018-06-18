@@ -1,11 +1,12 @@
 class Feedback{
     private feedbackString:string
+    private feedbackColor:string
     private div:HTMLElement
 
     constructor(score:number = 0){
         this.feedbackString = ''
         this.div = document.createElement('feedback')
-        this.div.style.transform = `translate(${window.innerWidth / 2 - 10}px, 20px)`
+        this.div.style.transform = `translate(${window.innerWidth / 2 - 125}px, ${window.innerHeight / 2 - 200}px)`
 
         switch(score){
             case 10:
@@ -26,6 +27,7 @@ class Feedback{
 
             
             this.div.innerText = this.feedbackString
+            this.div.style.color = "rgb(41, 10, 219)"
 
             document.body.appendChild(this.div)
 

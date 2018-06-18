@@ -13,6 +13,7 @@ var TitleScreen = (function () {
     function TitleScreen(game) {
         var _this = this;
         this.game = game;
+        this.introSound = new Audio("songs/introSound.mp3");
         var background = document.createElement('titleBackground');
         var start = document.createElement("start");
         var songChoice = document.createElement("songChoice");
@@ -24,8 +25,12 @@ var TitleScreen = (function () {
         menuBox.appendChild(start);
         document.body.appendChild(background);
         document.body.appendChild(menuBox);
+        setTimeout(function () { return _this.playIntroSound(); }, 1000);
         this.game.startGameLoop();
     }
+    TitleScreen.prototype.playIntroSound = function () {
+        this.introSound.play();
+    };
     TitleScreen.prototype.onClick = function () {
         this.game.showGameScreen();
     };
@@ -41,14 +46,18 @@ var EndScreen = (function () {
         var start = document.createElement("start");
         var songChoice = document.createElement("songChoice");
         var menuBox = document.createElement('menuBox');
+        var scoreTable = document.createElement('table');
+        scoreTable.innerHTML = "\n        <tr>\n            <th>Score: " +  + "</th>\n            <td></td>\n        </tr>\n        <tr>\n            <th>Perfect: </th>\n            <td></td>\n        </tr>\n        <tr>\n            <th>Great: </th>\n            <td></td>\n        </tr>\n        <tr>\n            <th>Nice: </th>\n            <td></td>\n        </tr>\n        <tr>\n            <th>Miss: </th>\n            <td></td>\n        </tr>\n        ";
         songChoice.innerText = 'Klaar ja, goed gedaan. NOg een keertje?';
         start.innerText = 'JAAAA!!!';
         start.addEventListener("click", function () { return _this.onClick(); });
+        menuBox.appendChild(scoreTable);
         menuBox.appendChild(songChoice);
         menuBox.appendChild(start);
         document.body.appendChild(background);
         document.body.appendChild(menuBox);
         this.game.startGameLoop();
+        console.log('endscreen');
     }
     EndScreen.prototype.onClick = function () {
         console.log('click');
@@ -64,7 +73,7 @@ var Feedback = (function () {
         var _this = this;
         this.feedbackString = '';
         this.div = document.createElement('feedback');
-        this.div.style.transform = "translate(" + (window.innerWidth / 2 - 10) + "px, 20px)";
+        this.div.style.transform = "translate(" + (window.innerWidth / 2 - 125) + "px, " + (window.innerHeight / 2 - 200) + "px)";
         switch (score) {
             case 10:
                 this.feedbackString = 'NICE!';
@@ -81,6 +90,7 @@ var Feedback = (function () {
         }
         if (this.feedbackString != '') {
             this.div.innerText = this.feedbackString;
+            this.div.style.color = "rgb(41, 10, 219)";
             document.body.appendChild(this.div);
             setTimeout(function () { return _this.div.remove(); }, 400);
         }
@@ -90,6 +100,7 @@ var Feedback = (function () {
 var Game = (function () {
     function Game() {
         this.songTitle = 'around_the_world';
+        this.screen = null;
         this.screen = new TitleScreen(this);
     }
     Game.prototype.startGameLoop = function () {
@@ -102,10 +113,12 @@ var Game = (function () {
     };
     Game.prototype.showGameScreen = function () {
         document.body.innerHTML = '';
+        this.screen = null;
         this.screen = new GameScreen(this);
     };
     Game.prototype.showEndScreen = function () {
         document.body.innerHTML = '';
+        this.screen = null;
         this.screen = new EndScreen(this);
     };
     return Game;
@@ -174,6 +187,7 @@ var GameScreen = (function () {
         this.songTimeCodes = [];
         this.background = document.createElement('gameBackground');
         document.body.appendChild(this.background);
+        this.song = new Audio("songs/" + this.game.songTitle + ".mp3");
         fetch("songs/" + this.game.songTitle + ".beatmap.js")
             .then(function (response) { return response.json(); })
             .then(function (data) { return _this.successHandler(data); })
@@ -187,20 +201,14 @@ var GameScreen = (function () {
     }
     GameScreen.prototype.successHandler = function (data) {
         this.songTimeCodes = data;
-        this.song = new stasilo.BeatDetector({
-            sens: 16,
-            visualizerFFTSize: 256,
-            analyserFFTSize: 256,
-            passFreq: 200,
-            url: "songs/" + this.game.songTitle + ".mp3",
-        });
+        this.song.play();
         this.game.startGameLoop();
     };
     GameScreen.prototype.errorHandler = function (data) {
         console.log(data);
     };
     GameScreen.prototype.generateNote = function () {
-        var randNum = Math.floor(Math.random() * 3);
+        var randNum = Math.floor(Math.random() * 4);
         switch (randNum) {
             case 0:
                 this.notes.push(new Note("left", this));
@@ -221,12 +229,14 @@ var GameScreen = (function () {
         this.notes.splice(index, 1);
     };
     GameScreen.prototype.update = function () {
-        if (this.song.getElapsedTime() > this.songTimeCodes[0] - 4) {
+        if (this.song.currentTime > this.songTimeCodes[0] - 4) {
             this.generateNote();
             this.songTimeCodes.shift();
-            if (this.songTimeCodes.length <= 0) {
-                this.game.showEndScreen();
-            }
+        }
+        if (this.songTimeCodes.length <= 0 && this.notes.length <= 0) {
+            this.song.pause();
+            console.log('klaar');
+            this.game.showEndScreen();
         }
         for (var _i = 0, _a = this.notes; _i < _a.length; _i++) {
             var note = _a[_i];

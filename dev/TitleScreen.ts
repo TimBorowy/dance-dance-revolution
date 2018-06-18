@@ -1,8 +1,12 @@
 class TitleScreen{
     private game:Game
+    private introSound:HTMLAudioElement
 
     constructor(game:Game){
         this.game = game
+
+        this.introSound = new Audio(`songs/introSound.mp3`)
+
         let background = document.createElement('titleBackground')
         let start = document.createElement("start")
         let songChoice = document.createElement("songChoice")
@@ -17,15 +21,19 @@ class TitleScreen{
 
         document.body.appendChild(background)
         document.body.appendChild(menuBox)
-        
+
+        setTimeout(() => this.playIntroSound(), 1000)        
 
         this.game.startGameLoop()
     }
 
-    public onClick(){
-        this.game.showGameScreen()
+    private playIntroSound():void{
+        this.introSound.play()
     }
 
+    private onClick(){
+        this.game.showGameScreen()
+    }
 
     public update(){
     }

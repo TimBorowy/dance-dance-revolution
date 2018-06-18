@@ -4,7 +4,7 @@ class GameScreen{
     public notes: Array<Note>
     public score:Score
 
-    private song:any
+    private song:HTMLAudioElement
     public background:HTMLElement
 
     private songTimeCodes:Array<number>
@@ -18,6 +18,7 @@ class GameScreen{
         this.background = document.createElement('gameBackground')
         document.body.appendChild(this.background)
 
+        this.song = new Audio(`songs/${this.game.songTitle}.mp3`)
 
         // get beatmap of song and start song when received
         fetch(`songs/${this.game.songTitle}.beatmap.js`)
@@ -41,15 +42,7 @@ class GameScreen{
     private successHandler(data:Array<number>){
         this.songTimeCodes = data
 
-        // remove this and use the normal audio api
-        this.song = new stasilo.BeatDetector({
-            sens: 16,
-            visualizerFFTSize: 256, 
-            analyserFFTSize: 256, 
-            passFreq: 200,
-            url: `songs/${this.game.songTitle}.mp3`,
-        });
-        //this.song.setVolume(0)
+        this.song.play()
         
         this.game.startGameLoop()
     }
@@ -59,7 +52,7 @@ class GameScreen{
 
     private generateNote(){
 
-        let randNum:number = Math.floor(Math.random() * 3);
+        let randNum:number = Math.floor(Math.random() * 4);
 
         switch(randNum){
             case 0:
@@ -81,33 +74,31 @@ class GameScreen{
 
         let index = this.notes.indexOf(note)
         this.notes.splice(index, 1);
+
     }
 
     public update(){
 
         //  THIS SHIT IS IMPORTANT!!!
-        if(this.song.getElapsedTime() > this.songTimeCodes[0] - 4 ){
+        if(this.song.currentTime > this.songTimeCodes[0] - 4 ){
             this.generateNote()
+
             this.songTimeCodes.shift()
 
-            if(this.songTimeCodes.length <= 0){
-                this.game.showEndScreen()
-            }
-
-            /* console.log("elapsed time: ", this.song.getElapsedTime())
-            console.log("beat timcode: ", this.songTimeCodes[0] - 4) */
         }
-
+        
+        // end game when notes are gone
+        if(this.songTimeCodes.length <= 0 && this.notes.length <= 0){
+            this.song.pause()
+            console.log('klaar')
+            this.game.showEndScreen()
+        }
         // when score is over a certain limit, rotate game
         /* if(this.score.score % 100 == 0 && this.score.score > 50){
 
-            if(this.rotate < this.rotateLimit){
-                this.rotate+=1
-                document.body.style.webkitTransformOrigin = 'center center'
-                document.body.style.transform = `rotate(${this.rotate}deg)`
-            }
+            document.body.style.webkitTransformOrigin = 'center center'
+            document.body.style.transform = `rotate(${this.rotate}deg)` 
         } */
-
 
         // loop all active notes
         for(let note of this.notes){

@@ -1,4 +1,4 @@
-/// <reference path="gameElement.ts" />
+/// <reference path="GameElement.ts" />
 
 class Key extends GameElement{
 

@@ -1,4 +1,4 @@
-/// <reference path="gameElement.ts" />
+/// <reference path="GameElement.ts" />
 
 
 class Note extends GameElement{
@@ -27,6 +27,8 @@ class Note extends GameElement{
     public remove(){
         this.element.remove()
         this.game.removeNote(this)
+
+        
     }
 
     
