@@ -1,8 +1,9 @@
 class GameScreen{
-    private game:Game
+    public game:Game
 
     public notes: Array<Note>
-    public score:Score
+    //public score:Score
+    public feedback:Feedback
 
     private song:HTMLAudioElement
     public background:HTMLElement
@@ -11,6 +12,7 @@ class GameScreen{
 
 
     constructor(game:Game){
+        
         this.game = game
 
         this.songTimeCodes = []
@@ -28,7 +30,7 @@ class GameScreen{
 
 
         // generate score object
-        this.score = new Score(this)
+        this.game.score.showScore()
         // init note array
         this.notes = new Array()
         // generate key objects
@@ -36,6 +38,8 @@ class GameScreen{
         new Key('up', this)
         new Key('down', this)
         new Key('right', this)
+
+        this.feedback = new Feedback(this)
 
     }
 
@@ -91,6 +95,7 @@ class GameScreen{
         if(this.songTimeCodes.length <= 0 && this.notes.length <= 0){
             this.song.pause()
             console.log('klaar')
+            this.game.score.saveScore()
             this.game.showEndScreen()
         }
         // when score is over a certain limit, rotate game
@@ -110,7 +115,7 @@ class GameScreen{
             if(note.yPos < 10){
                 note.remove()
                 // give feedback that player missed the note
-                new Feedback()
+                this.feedback.giveFeedback()
             }
         }
     }

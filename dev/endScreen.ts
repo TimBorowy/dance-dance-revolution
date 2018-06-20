@@ -8,35 +8,38 @@ class EndScreen{
         let start = document.createElement("start")
         let songChoice = document.createElement("songChoice")
         let menuBox = document.createElement('menuBox')
-        let scoreTable = document.createElement('table')
+        let perfectScore = document.createElement('textLine')
+        let greatScore = document.createElement('textLine')
+        let niceScore = document.createElement('textLine')
+        let totalScore = document.createElement('textLine')
+        let highScoreList = document.createElement('highScore')
 
-        scoreTable.innerHTML = `
-        <tr>
-            <th>Score: ${}</th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Perfect: </th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Great: </th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Nice: </th>
-            <td></td>
-        </tr>
-        <tr>
-            <th>Miss: </th>
-            <td></td>
-        </tr>
-        `
-        songChoice.innerText = 'Klaar ja, goed gedaan. NOg een keertje?'
+        this.game.score.highScore = this.game.score.highScore.sort((a:number, b:number) => b - a);
+
+        let highScore = document.createElement('textLine')
+        highScore.innerText = 'Highscores:'
+
+        highScoreList.appendChild(highScore)
+        for(let i = 0; i < 5; i++){
+            let temp = document.createElement('textLine')
+            temp.innerText = this.game.score.highScore[i]
+            highScoreList.appendChild(temp)
+        }
+        
+        perfectScore.innerText = `Perfect score: ${this.game.score.score.perfect}`
+        greatScore.innerText = `Great score: ${this.game.score.score.great}`
+        niceScore.innerText = `Nice score: ${this.game.score.score.nice}`
+        totalScore.innerText = `Total score: ${this.game.score.score.totalScore}`
+
+        songChoice.innerText = `Goed gedaan! NOg een keertje?`
         start.innerText = 'JAAAA!!!'
         start.addEventListener("click", () => this.onClick())
 
-        menuBox.appendChild(scoreTable)
+        menuBox.appendChild(highScoreList)
+        menuBox.appendChild(perfectScore)
+        menuBox.appendChild(greatScore)
+        menuBox.appendChild(niceScore)
+        menuBox.appendChild(totalScore)
         menuBox.appendChild(songChoice)
         menuBox.appendChild(start)
 
@@ -49,6 +52,7 @@ class EndScreen{
 
     public onClick(){
         console.log('click')
+        this.game.score.resetScore()
         this.game.showGameScreen()
     }
 

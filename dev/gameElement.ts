@@ -1,12 +1,12 @@
 class GameElement{
-    protected game:GameScreen
+    protected screen:GameScreen
     protected element:HTMLElement
     protected _direction:string = ''
     protected _xPos:number = 0
     protected _yPos:number = 0
 
-    constructor(game:GameScreen, elementName:string, direction:string){
-        this.game = game
+    constructor(screen:GameScreen, elementName:string, direction:string){
+        this.screen = screen
 
         this.direction = direction
 

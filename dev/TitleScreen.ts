@@ -11,11 +11,26 @@ class TitleScreen{
         let start = document.createElement("start")
         let songChoice = document.createElement("songChoice")
         let menuBox = document.createElement('menuBox')
+        let highScoreList = document.createElement('highScore')
+
+        this.game.score.highScore = this.game.score.highScore.sort((a:number, b:number) => b - a);
+
+        let highScore = document.createElement('textLine')
+        highScore.innerText = 'Highscores:'
+
+        highScoreList.appendChild(highScore)
+        for(let i = 0; i < 5; i++){
+            let temp = document.createElement('textLine')
+            temp.innerText = this.game.score.highScore[i]
+            highScoreList.appendChild(temp)
+        }
 
         songChoice.innerText = `Playing: ${this.game.songTitle}`
         start.innerText = 'Click here to start the game'
         start.addEventListener("click", () => this.onClick())
 
+
+        menuBox.appendChild(highScoreList)
         menuBox.appendChild(songChoice)
         menuBox.appendChild(start)
 

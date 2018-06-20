@@ -2,6 +2,8 @@
 
 Game project voor programmeren OP4 in Typescript
 
+https://timborowy.github.io/typescript_game/
+
 ## Feedback op mijn game
 
 ## Mijn Feedback peer review op:

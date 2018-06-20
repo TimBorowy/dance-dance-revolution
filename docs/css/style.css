@@ -1,32 +1,50 @@
+@font-face{
+    font-family: 'Aero';
+    src: url('/fonts/Aero.woff') format('woff'), /* Pretty Modern Browsers */
+        url('/fonts/Aero.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+
 body {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Aero', cursive;
     color:white;
-    font-size:25px;
+    font-size:45px;
     overflow:hidden;
     margin:0px; padding:0px;
 }
 
+
 body * {
     position: absolute;
-    display: block;
     box-sizing: border-box;
     background-repeat: no-repeat;
-    
 }
+
 menuBox{
+    display: block;
     width: 100%;
-    height: 100px;
-    margin-top:calc(50vh - 50px);
+    height: 600px;
+    margin-top:calc(50vh - 325px);
     text-align:center;
 }
 songChoice, start{
     position: initial;
     display: block;
-    margin-bottom: 30px;
+    margin: 50px 0;
+}
+
+textLine, highscore{
+    position: initial;
+    display: block;
+    margin-bottom: 20px;
+}
+
+highscore textLine{
+    font-size: 30px;
+    margin-bottom: 10px;
 }
 
 start{
-    cursor: pointer
+    cursor: pointer;
 }
 
 score {
@@ -34,20 +52,23 @@ score {
 }
 
 key {
+    display: block;
     width:100px; height: 100px;
     background-size: cover
 }
 
 note {
+    display: block;
     width:100px; height: 100px;
     background-size: cover
 }
 
 feedback{
+    display: block;
     height: 50px;
-    width: 250px;
+    width: 450px;
     text-align: center;
-    font-size: 50px;
+    font-size: 100px;
     font-weight: bold;
     color: rgb(41, 10, 219);
     -webkit-text-stroke: 2px white;
@@ -73,6 +94,7 @@ feedback{
 }
 
 titleBackground{
+    display: block;
     z-index: -1;
     height: 100vh;
     width: 100%;
@@ -85,6 +107,7 @@ titleBackground{
 }
 
 gameBackground{
+    display: block;
     height: 100vh;
     width: 100%;
     background-color: rgb(22, 120, 233);

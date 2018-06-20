@@ -5,12 +5,12 @@ class Key extends GameElement{
     private successThresholdLow:number = 65
     private successThresholdHigh:number = 95
 
-    constructor(direction:string, game:GameScreen){
+    constructor(direction:string, screen:GameScreen){
 
-        super(game, 'key', direction)
+        super(screen, 'key', direction)
         
-        if(this.game.background != null){
-            this.game.background.appendChild(this.element)
+        if(this.screen.background != null){
+            this.screen.background.appendChild(this.element)
         }
         
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
@@ -21,7 +21,7 @@ class Key extends GameElement{
 
     private onKeyDown(e: KeyboardEvent){
         // run through all active notes on screen
-        for (let note of this.game.notes) {
+        for (let note of this.screen.notes) {
             
             // when player presses left and a note direction is also left
             if (e.keyCode == 37 && note.direction == "left") {
@@ -54,10 +54,10 @@ class Key extends GameElement{
             }
 
             // give user feedback
-            new Feedback(score)
+            this.screen.feedback.giveFeedback(score)
 
             // add to score
-            this.game.score.scoreUp(score)
+            this.screen.game.score.scoreUp(score)
             
             // remove note from screen
             note.remove()
