@@ -331,7 +331,6 @@ var Score = (function () {
         this.element = document.createElement('score');
         var storage = window.localStorage.getItem('highScore');
         if (storage === null) {
-            console.log('new');
             this.highScore = new Array();
             window.localStorage.setItem('highScore', this.highScore.toString());
         }

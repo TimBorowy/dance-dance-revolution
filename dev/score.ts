@@ -14,7 +14,6 @@ class Score{
         let storage = window.localStorage.getItem('highScore')
 
         if(storage === null){
-            console.log('new')
             this.highScore = new Array()
             window.localStorage.setItem('highScore', this.highScore.toString())
         }else{

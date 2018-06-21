@@ -1,7 +1,7 @@
 @font-face{
     font-family: 'Aero';
-    src: url('/fonts/Aero.woff') format('woff'), /* Pretty Modern Browsers */
-        url('/fonts/Aero.ttf')  format('truetype'); /* Safari, Android, iOS */
+    src: url('../fonts/Aero.woff') format('woff'), /* Pretty Modern Browsers */
+        url('../fonts/Aero.ttf')  format('truetype'); /* Safari, Android, iOS */
 }
 
 body {
