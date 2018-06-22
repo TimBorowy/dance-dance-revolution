@@ -1,4 +1,5 @@
 class EndScreen{
+    
     private game:Game
 
     constructor(game:Game){

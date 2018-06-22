@@ -1,10 +1,10 @@
 
 class Game {
+
     public screen:any
     public songTitle:string
     public score:Score
     
-
     constructor(){
         this.score = new Score()
         this.songTitle = 'around_the_world'

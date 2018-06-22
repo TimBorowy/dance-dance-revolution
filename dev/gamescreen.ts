@@ -1,10 +1,8 @@
 class GameScreen{
+    
     public game:Game
-
     public notes: Array<Note>
-    //public score:Score
     public feedback:Feedback
-
     private song:HTMLAudioElement
     public background:HTMLElement
 

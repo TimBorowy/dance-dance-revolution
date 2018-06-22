@@ -13,21 +13,40 @@ https://timborowy.github.io/typescript_game/
 
 ## Toelichting OOP 
 
-Licht toe waar en waarom je deze OOP principes hebt toegepast
-
 **Classes**
-Voor alle onderdelen in mijn game heb ik een klasse aangemaakt. 
+Voor alle onderdelen in mijn game heb ik een class aangemaakt. Dit zijn onderdelen die opzichzelf staan en verantwoordelijk zijn voor alles wat met dat object te maken heeft. 
+
+Een aantal voorbeelden van classes
+![gamescreen](https://upload.borowy.nl/i/XqoB2Pal.png)
+
+![feedback](https://upload.borowy.nl/i/u1Jo8mzd.png)
+
 
 **Encapsulation**
-Alleen de properties die beschikbaar voor andere klassen moeten zijn heb ik daarvoor beschikbaar gemaakt middels een getter of setter
+Alleen de properties die beschikbaar voor andere classes moeten zijn heb ik daarvoor beschikbaar gemaakt middels een getter of setter. Doormiddel van encapsulation kun je er voor zorgen niet alle properties of methodes van beschikbaar zijn voor de rest van de applicatie. Hiermee maak je het ook makkelijk om bugs of raar gedrag te voorkomen.
+
+De properties song en songTimeCodes zijn alleen binnen deze class nodig dus zijn ze private.
+Omdat ik een referentie meegeef aan classes die in in deze class aanroep naar het huidige object heb ik de property game public gemaakt.
+![gamescreen](https://upload.borowy.nl/i/gWGCx6AN.png)
+
 **Composition**
+Met composition bepaal je welke classes onder welke class horen. In mijn voorbeeld: class game has (*)Screen. In het TitleScreen is dan een referentie naar het game object.
+![game class](https://upload.borowy.nl/i/ncJjDnj0.png)
+
+titleScreen
+![title screen](https://upload.borowy.nl/i/uz0KJIuH.png)
 
 **Inheritance**
+
+Class key erft een aantal properties en methods over van gameElement. Dit gebeurt omdat de methodes die key overerft, eigenlijk ook hetzelfde zijn als bij note. Daarom extend note ook net als key, gameElement.
+![key](https://upload.borowy.nl/i/GcgNUxup.png)
+
+![note](https://upload.borowy.nl/i/8TiaJswZ.png)
 
 
 ## Klassendiagram
 
-Een klassendiagram van de game.
+![klasseDiagram](https://upload.borowy.nl/i/XrlAZm59.jpeg)
 
 ## Peer review
 

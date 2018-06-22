@@ -1,4 +1,5 @@
 class Score{
+    
     private _score:ScoreObject
     private element:HTMLElement
     public highScore:any

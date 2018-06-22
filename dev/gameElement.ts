@@ -1,4 +1,5 @@
 class GameElement{
+    
     protected screen:GameScreen
     protected element:HTMLElement
     protected _direction:string = ''

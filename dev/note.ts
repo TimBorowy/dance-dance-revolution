@@ -1,6 +1,5 @@
 /// <reference path="GameElement.ts" />
 
-
 class Note extends GameElement{
     
     constructor(direction:string, screen:GameScreen){

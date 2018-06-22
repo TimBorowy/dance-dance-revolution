@@ -1,4 +1,5 @@
 class Feedback{
+    
     private feedbackString:string
     private div:HTMLElement
     private screen:GameScreen
