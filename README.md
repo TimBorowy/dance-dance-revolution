@@ -51,7 +51,7 @@ Class key erft een aantal properties en methods over van gameElement. Dit gebeur
 
 ## Klassendiagram
 
-![klasseDiagram](https://upload.borowy.nl/i/VobbxsDM.jpeg)
+![klasseDiagram](https://upload.borowy.nl/i/ZsyYEF8H.png)
 
 ## Peer review
 
