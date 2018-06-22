@@ -17,6 +17,7 @@ https://timborowy.github.io/typescript_game/
 Voor alle onderdelen in mijn game heb ik een class aangemaakt. Dit zijn onderdelen die opzichzelf staan en verantwoordelijk zijn voor alles wat met dat object te maken heeft. 
 
 Een aantal voorbeelden van classes
+
 ![gamescreen](https://upload.borowy.nl/i/XqoB2Pal.png)
 
 ![feedback](https://upload.borowy.nl/i/u1Jo8mzd.png)
@@ -27,18 +28,22 @@ Alleen de properties die beschikbaar voor andere classes moeten zijn heb ik daar
 
 De properties song en songTimeCodes zijn alleen binnen deze class nodig dus zijn ze private.
 Omdat ik een referentie meegeef aan classes die in in deze class aanroep naar het huidige object heb ik de property game public gemaakt.
+
 ![gamescreen](https://upload.borowy.nl/i/gWGCx6AN.png)
 
 **Composition**
 Met composition bepaal je welke classes onder welke class horen. In mijn voorbeeld: class game has (*)Screen. In het TitleScreen is dan een referentie naar het game object.
+
 ![game class](https://upload.borowy.nl/i/ncJjDnj0.png)
 
 titleScreen
+
 ![title screen](https://upload.borowy.nl/i/uz0KJIuH.png)
 
 **Inheritance**
 
 Class key erft een aantal properties en methods over van gameElement. Dit gebeurt omdat de methodes die key overerft, eigenlijk ook hetzelfde zijn als bij note. Daarom extend note ook net als key, gameElement.
+
 ![key](https://upload.borowy.nl/i/GcgNUxup.png)
 
 ![note](https://upload.borowy.nl/i/8TiaJswZ.png)
@@ -46,7 +51,7 @@ Class key erft een aantal properties en methods over van gameElement. Dit gebeur
 
 ## Klassendiagram
 
-![klasseDiagram](https://upload.borowy.nl/i/XrlAZm59.jpeg)
+![klasseDiagram](https://upload.borowy.nl/i/VobbxsDM.jpeg)
 
 ## Peer review
 
