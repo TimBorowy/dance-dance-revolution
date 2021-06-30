@@ -20,7 +20,10 @@ class TitleScreen{
         highScore.innerText = 'Highscores:'
 
         highScoreList.appendChild(highScore)
-        for(let i = 0; i < 5; i++){
+
+        const limit = this.game.score.highScore.length <= 5 ? this.game.score.highScore.length : 5
+
+        for(let i = 0; i < limit; i++){
             let temp = document.createElement('textLine')
             temp.innerText = this.game.score.highScore[i]
             highScoreList.appendChild(temp)

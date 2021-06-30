@@ -4,7 +4,7 @@ Game project voor programmeren OP4, CMTTHE01-4 in Typescript
 
 ## Gamelink
  
-https://timborowy.github.io/typescript_game/
+https://timborowy.github.io/dance-dance-revolution/
 
 ## Checklist
 

@@ -92,6 +92,7 @@ class GameScreen{
         // end game when notes are gone
         if(this.songTimeCodes.length <= 0 && this.notes.length <= 0){
             this.song.pause()
+            this.song.currentTime = 0;
             console.log('klaar')
             this.game.score.saveScore()
             this.game.showEndScreen()

@@ -1,14 +1,60 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var TitleScreen = (function () {
+    function TitleScreen(game) {
+        var _this = this;
+        this.game = game;
+        this.introSound = new Audio("songs/introSound.mp3");
+        var background = document.createElement('titleBackground');
+        var start = document.createElement("start");
+        var songChoice = document.createElement("songChoice");
+        var menuBox = document.createElement('menuBox');
+        var highScoreList = document.createElement('highScore');
+        this.game.score.highScore = this.game.score.highScore.sort(function (a, b) { return b - a; });
+        var highScore = document.createElement('textLine');
+        highScore.innerText = 'Highscores:';
+        highScoreList.appendChild(highScore);
+        var limit = this.game.score.highScore.length <= 5 ? this.game.score.highScore.length : 5;
+        for (var i = 0; i < limit; i++) {
+            var temp = document.createElement('textLine');
+            temp.innerText = this.game.score.highScore[i];
+            highScoreList.appendChild(temp);
+        }
+        songChoice.innerText = "Playing: " + this.game.songTitle;
+        start.innerText = 'Click here to start the game';
+        start.addEventListener("click", function () { return _this.onClick(); });
+        menuBox.appendChild(highScoreList);
+        menuBox.appendChild(songChoice);
+        menuBox.appendChild(start);
+        document.body.appendChild(background);
+        document.body.appendChild(menuBox);
+        setTimeout(function () { return _this.playIntroSound(); }, 1000);
+        this.game.startGameLoop();
+    }
+    TitleScreen.prototype.playIntroSound = function () {
+        this.introSound.play();
+    };
+    TitleScreen.prototype.onClick = function () {
+        this.game.showGameScreen();
+    };
+    TitleScreen.prototype.update = function () {
+    };
+    return TitleScreen;
+}());
 var EndScreen = (function () {
     function EndScreen(game) {
         var _this = this;
@@ -26,7 +72,8 @@ var EndScreen = (function () {
         var highScore = document.createElement('textLine');
         highScore.innerText = 'Highscores:';
         highScoreList.appendChild(highScore);
-        for (var i = 0; i < 5; i++) {
+        var limit = this.game.score.highScore.length <= 5 ? this.game.score.highScore.length : 5;
+        for (var i = 0; i < limit; i++) {
             var temp = document.createElement('textLine');
             temp.innerText = this.game.score.highScore[i];
             highScoreList.appendChild(temp);
@@ -154,7 +201,7 @@ var GameElement = (function () {
         set: function (xPos) {
             this._xPos = xPos;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(GameElement.prototype, "yPos", {
@@ -164,7 +211,7 @@ var GameElement = (function () {
         set: function (yPos) {
             this._yPos = yPos;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(GameElement.prototype, "direction", {
@@ -174,7 +221,7 @@ var GameElement = (function () {
         set: function (direction) {
             this._direction = direction;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return GameElement;
@@ -235,6 +282,7 @@ var GameScreen = (function () {
         }
         if (this.songTimeCodes.length <= 0 && this.notes.length <= 0) {
             this.song.pause();
+            this.song.currentTime = 0;
             console.log('klaar');
             this.game.score.saveScore();
             this.game.showEndScreen();
@@ -373,49 +421,9 @@ var Score = (function () {
         get: function () {
             return this._score;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Score;
-}());
-var TitleScreen = (function () {
-    function TitleScreen(game) {
-        var _this = this;
-        this.game = game;
-        this.introSound = new Audio("songs/introSound.mp3");
-        var background = document.createElement('titleBackground');
-        var start = document.createElement("start");
-        var songChoice = document.createElement("songChoice");
-        var menuBox = document.createElement('menuBox');
-        var highScoreList = document.createElement('highScore');
-        this.game.score.highScore = this.game.score.highScore.sort(function (a, b) { return b - a; });
-        var highScore = document.createElement('textLine');
-        highScore.innerText = 'Highscores:';
-        highScoreList.appendChild(highScore);
-        for (var i = 0; i < 5; i++) {
-            var temp = document.createElement('textLine');
-            temp.innerText = this.game.score.highScore[i];
-            highScoreList.appendChild(temp);
-        }
-        songChoice.innerText = "Playing: " + this.game.songTitle;
-        start.innerText = 'Click here to start the game';
-        start.addEventListener("click", function () { return _this.onClick(); });
-        menuBox.appendChild(highScoreList);
-        menuBox.appendChild(songChoice);
-        menuBox.appendChild(start);
-        document.body.appendChild(background);
-        document.body.appendChild(menuBox);
-        setTimeout(function () { return _this.playIntroSound(); }, 1000);
-        this.game.startGameLoop();
-    }
-    TitleScreen.prototype.playIntroSound = function () {
-        this.introSound.play();
-    };
-    TitleScreen.prototype.onClick = function () {
-        this.game.showGameScreen();
-    };
-    TitleScreen.prototype.update = function () {
-    };
-    return TitleScreen;
 }());
 //# sourceMappingURL=main.js.map

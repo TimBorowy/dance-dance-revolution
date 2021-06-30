@@ -18,12 +18,17 @@ class Game {
 
 
     private gameLoop():void{
-        //console.log(this.screen)
-        /* if(
-            this.screen instanceof GameScreen || 
-            this.screen instanceof TitleScreen ||
-            this.screen instanceof EndScreen
-        ){ */
+        // uncomment this and break the game
+        // Appearently the gamescreen update bug is load bearing 😢
+        // game starts and end condition is given immediately while game continues in the background
+        // game can be restarted and it starts a new instance and overlays the sound on the old one
+
+        // if(
+        //     this.screen instanceof GameScreen || 
+        //     this.screen instanceof TitleScreen ||
+        //     this.screen instanceof EndScreen
+        // ){ 
+            //}
             this.screen.update() 
         //}
 
